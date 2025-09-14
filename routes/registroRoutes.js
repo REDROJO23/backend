@@ -12,6 +12,19 @@ router.get('/ping', (req, res) => {
   res.json({ mensaje: 'pong' });
 });
 
+const pool = require('../db'); // Asegúrate de importar el pool si no está
+
+// Ruta para verificar conexión con la base de datos
+router.get('/db-check', async (req, res) => {
+  try {
+    const result = await pool.query('SELECT NOW()');
+    res.json({ status: 'Conectado ✅', time: result.rows[0].now });
+  } catch (error) {
+    console.error('❌ Error en /db-check:', error.message);
+    res.status(500).json({ status: 'Error ❌', message: error.message });
+  }
+});
+
 // Ruta para registrar datos
 router.post('/registro', async (req, res) => {
   try {
