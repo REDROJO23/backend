@@ -1,4 +1,4 @@
-// backend/routes/registroRoutes.js
+/ backend/routes/registroRoutes.js
 const express = require('express');
 const router = express.Router();
 const {
@@ -7,12 +7,12 @@ const {
   eliminarPorId
 } = require('../models/registroModel');
 
+const pool = require('../db'); // Conexión a la base de datos
+
 // Ruta de prueba para verificar conexión
 router.get('/ping', (req, res) => {
   res.json({ mensaje: 'pong' });
 });
-
-const pool = require('../db'); // Asegúrate de importar el pool si no está
 
 // Ruta para verificar conexión con la base de datos
 router.get('/db-check', async (req, res) => {
@@ -28,13 +28,15 @@ router.get('/db-check', async (req, res) => {
 // Ruta para registrar datos
 router.post('/registro', async (req, res) => {
   try {
-    const { nombre, hora } = req.body;
+    const { nombre, hora_entrada, hora_salida, fecha } = req.body;
 
-    if (!nombre || !hora) {
+    console.log('📥 Datos recibidos en /registro:', req.body);
+
+    if (!nombre || !hora_entrada || !fecha) {
       return res.status(400).json({ error: 'Faltan campos requeridos' });
     }
 
-    await insertarRegistro({ nombre, hora });
+    await insertarRegistro({ nombre, hora_entrada, hora_salida, fecha });
     res.status(201).json({ mensaje: 'Registro exitoso' });
   } catch (err) {
     console.error('❌ Error en /registro:', err.message);
