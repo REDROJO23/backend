@@ -1,4 +1,4 @@
-/ backend/routes/registroRoutes.js
+// backend/routes/registroRoutes.js
 const express = require('express');
 const router = express.Router();
 const {
